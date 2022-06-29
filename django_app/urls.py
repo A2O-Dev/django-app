@@ -13,11 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import redirect
 from django.urls import path, include
 from product_api import urls as product_urls
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
+    path('', lambda request: redirect('api/products/', permanent=True)),
     path('api/auth/', include('rest_framework.urls')),
     path('oauth/token/', obtain_auth_token),
     path('api/products/', include(product_urls))
