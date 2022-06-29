@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  app:
+    container_name: django_app_demo
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+    image: django_app_demo:1.0
+    restart: always
+    ports:
+      - ${DOCKER_HOST}:80
+    volumes:
+      - $PWD:/usr/src/app
+    depends_on:
+      - database
+    command: python manage.py runserver 0.0.0.0:80
+
+  database:
+    container_name: django_app_db_demo
+    image: mariadb:${MARIADB_VERSION}
+    restart: always
+    ports:
+      - ${DOCKER_DB_HOST}:3306
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
