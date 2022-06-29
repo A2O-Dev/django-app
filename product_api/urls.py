@@ -1,2 +1,6 @@
+from django.urls import path
+from .views import ProductController
 
-urlpatterns = []
+urlpatterns = [
+    path('', ProductController.as_view())
+]
