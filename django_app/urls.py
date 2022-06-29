@@ -17,6 +17,6 @@ from django.urls import path, include
 from product_api import urls as product_urls
 
 urlpatterns = [
-    path('api-auth/', include('rest_framework.urls')),
-    path('products/', include(product_urls))
+    path('api/auth/', include('rest_framework.urls')),
+    path('api/products/', include(product_urls))
 ]
