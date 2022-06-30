@@ -16,7 +16,7 @@ services:
       - $PWD:/usr/src/app
     depends_on:
       - database
-    command: python manage.py runserver 0.0.0.0:80
+    command: python manage.py runserver 0.0.0.0:80 --insecure
 
   database:
     container_name: django_app_db_demo

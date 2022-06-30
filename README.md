@@ -44,7 +44,13 @@ To Seed
 docker compose exec app python manage.py seeder
 ```
 
-5. Create a superuser
+5. Generate static files
+
+```shell
+docker compose exec app python manage.py collectstatic
+```
+
+6. Create a superuser
 
 ```shell
 docker compose exec app python manage.py createsuperuser

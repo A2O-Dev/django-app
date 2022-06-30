@@ -17,10 +17,12 @@ from django.shortcuts import redirect
 from django.urls import path, include
 from api import urls as api_urls
 from rest_framework.authtoken.views import obtain_auth_token
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', lambda request: redirect('api/', permanent=True)),
     path('auth/', include('rest_framework.urls')),
     path('oauth/token/', obtain_auth_token),
     path('api/', include(api_urls))
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
