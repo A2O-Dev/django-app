@@ -30,8 +30,22 @@ The output save in .env file in the next variable
 APP_KEY
 ```
 
-4. Migrate database
+4. Migrate database and seed
+
+To Migrate
 
 ```shell
 docker compose exec app python manage.py migrate
+```
+
+To Seed
+
+```shell
+docker compose exec app python manage.py seeder
+```
+
+5. Create a superuser
+
+```shell
+docker compose exec app python manage.py createsuperuser
 ```
