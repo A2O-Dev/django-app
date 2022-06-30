@@ -7,7 +7,8 @@ from .serializers import ProductSerializer
 
 
 class ApiRoot(generics.GenericAPIView):
-    name = 'api-root'
+    name = 'Api Root'
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         return Response({
