@@ -16,13 +16,7 @@ cp .env.example .env
 docker compose up -d
 ```
 
-3. Migrate database
-
-```shell
-docker compose exec app python manage.py migrate
-```
-
-4. Generate secret key
+3. Generate secret key
 
 Generate with the next command
 
@@ -34,4 +28,10 @@ The output save in .env file in the next variable
 
 ```
 APP_KEY
+```
+
+4. Migrate database
+
+```shell
+docker compose exec app python manage.py migrate
 ```
