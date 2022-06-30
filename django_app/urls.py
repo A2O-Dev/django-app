@@ -19,6 +19,7 @@ from api import urls as api_urls
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
+    path('', lambda request: redirect('api/', permanent=True)),
     path('auth/', include('rest_framework.urls')),
     path('oauth/token/', obtain_auth_token),
     path('api/', include(api_urls))
