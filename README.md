@@ -13,7 +13,7 @@ cp .env.example .env
 2. Up containers
 
 ```shell
-docker compose up -d
+docker compose up app database -d
 ```
 
 3. Generate secret key
@@ -50,7 +50,13 @@ docker compose exec app python manage.py seeder
 docker compose exec app python manage.py collectstatic
 ```
 
-6. Create a superuser
+6. Up nginx container
+
+```shell
+docker compose up nginx -d
+```
+
+7. Create a superuser
 
 ```shell
 docker compose exec app python manage.py createsuperuser
