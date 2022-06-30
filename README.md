@@ -21,3 +21,17 @@ docker compose up -d
 ```shell
 docker compose exec app python manage.py migrate
 ```
+
+4. Generate secret key
+
+Generate with the next command
+
+```shell
+docker compose exec app python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+The output save in .env file in the next variable
+
+```
+APP_KEY
+```
