@@ -1,88 +1,28 @@
-from rest_framework.views import APIView
+from rest_framework import generics, permissions
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import permissions
+from rest_framework.reverse import reverse
 from .models import Product
 from .serializers import ProductSerializer
 
 
-class ProductListView(APIView):
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'products': reverse(ProductListView.name, request=request)
+        })
+
+
+class ProductListView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        data = {
-            'name': request.data.get('name'),
-            'code': request.data.get('code'),
-            'price': request.data.get('price'),
-            'dimensions': request.data.get('dimensions'),
-            'colors': request.data.get('colors'),
-            'tags': request.data.get('tags'),
-            'stock': request.data.get('stock')
-        }
-        serializer = ProductSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    name = 'product-list'
 
 
-class ProductDetailView(APIView):
+class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self, product_id):
-        try:
-            return Product.objects.get(id=product_id)
-        except Product.DoesNotExist:
-            return None
-
-    def get(self, request, product_id):
-        product = self.get_object(product_id)
-        if not product:
-            return Response(
-                {"res": "Object with product id does not exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        serializer = ProductSerializer(product)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, product_id):
-        product = self.get_object(product_id)
-        if not product:
-            return Response(
-                {"res": "Object with product id does not exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        data = {
-            'name': request.data.get('name'),
-            'code': request.data.get('code'),
-            'price': request.data.get('price'),
-            'dimensions': request.data.get('dimensions'),
-            'colors': request.data.get('colors'),
-            'tags': request.data.get('tags'),
-            'stock': request.data.get('stock')
-        }
-        serializer = ProductSerializer(instance=product, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, product_id):
-        product = self.get_object(product_id)
-        if not product:
-            return Response(
-                {"res": "Object with product id does not exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        product.delete()
-        return Response(
-            {"res": "Object deleted!"},
-            status=status.HTTP_200_OK
-        )
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    name = 'product-detail'
