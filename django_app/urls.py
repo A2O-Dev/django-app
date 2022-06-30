@@ -15,13 +15,11 @@ Including another URLconf
 """
 from django.shortcuts import redirect
 from django.urls import path, include
-from product_api import urls as product_urls
+from api import urls as api_urls
 from rest_framework.authtoken.views import obtain_auth_token
-from product_api.views import ApiRoot
 
 urlpatterns = [
-    path('', ApiRoot.as_view()),
-    path('api/auth/', include('rest_framework.urls')),
+    path('auth/', include('rest_framework.urls')),
     path('oauth/token/', obtain_auth_token),
-    path('api/products/', include(product_urls))
+    path('api/', include(api_urls))
 ]
