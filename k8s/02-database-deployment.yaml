@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-demo-database
+  namespace: demos
+  labels:
+    app: django-app-demo-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-app-demo-database
+  template:
+    metadata:
+      labels:
+        app: django-app-demo-database
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: django-app-demo-database
+          image: mariadb:10.8.3
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+              ephemeral-storage: 500Mi
+          envFrom:
+            - secretRef:
+                name: django-app-demo-secrets
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: persistent-volume
+              mountPath: /var/lib/mysql
+              subPath: database
+      volumes:
+        - name: persistent-volume
+          persistentVolumeClaim:
+            claimName: django-app-demo
