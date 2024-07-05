@@ -5,9 +5,10 @@ services:
     container_name: django-app-demo
     build:
       context: .
-      dockerfile: .docker/app/Dockerfile
+      dockerfile: Dockerfile
       args:
         - PYTHON_VERSION=${PYTHON_VERSION}
+        - NGINX_VERSION=${NGINX_VERSION}
     image: django_app_demo:1.0
     restart: always
     volumes:
@@ -30,11 +31,7 @@ services:
 
   nginx:
     container_name: django-app-nginx-demo
-    build:
-      context: .docker/nginx
-      args:
-        - NGINX_VERSION=${NGINX_VERSION}
-    image: django_app_nginx_demo:1.0
+    image: nginx:${NGINX_VERSION}-alpine
     restart: always
     volumes:
       - $PWD:/usr/share/nginx/html
