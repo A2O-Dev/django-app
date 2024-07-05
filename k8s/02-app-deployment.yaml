@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-demo
+  namespace: demos
+  labels:
+    app: django-app-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django-app-demo
+  template:
+    metadata:
+      labels:
+        app: django-app-demo
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: django-app-demo
+          image: a2odev/django-app-demo
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: django-app-demo
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+              ephemeral-storage: 500Mi
+          ports:
+            - containerPort: 80

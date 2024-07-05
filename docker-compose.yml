@@ -1,47 +1,40 @@
-version: "3"
-
 services:
   app:
-    container_name: django_app_demo
+    container_name: django-app-demo
     build:
       context: .
-      dockerfile: .docker/app/Dockerfile
+      dockerfile: Dockerfile
       args:
-        - PYTHON_VERSION=${PYTHON_VERSION}
-    image: django_app_demo:1.0
+        - PYTHON_VERSION=${PYTHON_VERSION:-3.10.5}
+    image: django-app-demo:1.0.0
     restart: always
+    ports:
+      - "80:80"
+    environment:
+      - APP_DEBUG=${APP_DEBUG:-1}
+      - APP_KEY=${APP_KEY:-secret}
+      - DB_ENGINE=${DB_ENGINE:-django.db.backends.mysql}
+      - DB_HOST=${DB_HOST:-database}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_DATABASE=${DB_DATABASE:-django}
+      - DB_USERNAME=${DB_USERNAME:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
     volumes:
       - $PWD:/usr/src/app
     depends_on:
       - database
-    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
 
   database:
-    container_name: django_app_db_demo
-    image: mariadb:${MARIADB_VERSION}
+    container_name: django-app-db-demo
+    image: mariadb:${MARIADB_VERSION:-10.8.3}
     restart: always
     ports:
-      - ${DOCKER_DB_HOST}:3306
+      - ${DOCKER_DB_HOST:-127.0.0.1:3306}:3306
     environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE:-django}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
     volumes:
       - db_data:/var/lib/mysql
-
-  nginx:
-    container_name: django_app_nginx_demo
-    build:
-      context: .docker/nginx
-      args:
-        - NGINX_VERSION=${NGINX_VERSION}
-    image: django_app_nginx_demo:1.0
-    restart: always
-    volumes:
-      - $PWD:/usr/share/nginx/html
-    ports:
-      - ${DOCKER_HOST}:80
-    depends_on:
-      - app
 
 volumes:
   db_data:

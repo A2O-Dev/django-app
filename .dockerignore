@@ -1,4 +1,2 @@
-*
-
-!.docker/
-!requirements.txt
+.git
+k8s
