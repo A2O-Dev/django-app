@@ -1,19 +1,25 @@
 ARG PYTHON_VERSION=3.10.5
-ARG NGINX_VERSION=1.23.0
+
 FROM python:${PYTHON_VERSION}-alpine
 
 WORKDIR /usr/src/app
 
+RUN apk add -U --no-cache nginx supervisor
 
 RUN pip install --upgrade pip
-COPY requirements.txt ./
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# TODO: Generate static files
 
-COPY config/nginx.conf /etc/nginx/conf.d
+# Setting supervisord
+RUN mkdir -p /var/log/supervisor
+COPY --chmod=0777 docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Setting nginx
+COPY --chmod=0777 docker/nginx/nginx.conf /etc/nginx/http.d/default.conf
 
-EXPOSE 8000 80
+EXPOSE 80
 
-
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:8000 myproject.wsgi:application & nginx -g 'daemon off;'"]
+## Start supervisord
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

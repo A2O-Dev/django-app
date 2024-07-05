@@ -1,4 +1,2 @@
-*
-!config/
-!requirements.txt
-!.env
+.git
+k8s
