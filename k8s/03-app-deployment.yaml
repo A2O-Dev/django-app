@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: django-app-demo
-          image: salt/django-mariadb:1.0.0
+          image: a2odev/django-app-demo
           imagePullPolicy: Always
           envFrom:
             - secretRef:

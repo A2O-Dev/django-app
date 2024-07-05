@@ -4,7 +4,6 @@ metadata:
   name: django-app-demo
   namespace: demos
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteMany
   resources:

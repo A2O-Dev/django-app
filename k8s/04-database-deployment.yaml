@@ -34,10 +34,10 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: persistent-volume
+            - name: django-app-demo
               mountPath: /var/lib/mysql
               subPath: database
       volumes:
-        - name: persistent-volume
+        - name: django-app-demo
           persistentVolumeClaim:
             claimName: django-app-demo
