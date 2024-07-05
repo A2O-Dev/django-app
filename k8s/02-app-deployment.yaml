@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: django-app-demo-secrets
+                name: django-app-demo
           resources:
             requests:
               memory: "250Mi"
