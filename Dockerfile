@@ -10,6 +10,7 @@ RUN pip install --upgrade pip
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Generate Static files
 RUN python manage.py collectstatic --noinput
 
 # Setting supervisord
