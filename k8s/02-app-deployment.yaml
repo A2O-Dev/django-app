@@ -25,11 +25,11 @@ spec:
                 name: django-app-demo
           resources:
             requests:
-              memory: "250Mi"
-              cpu: "0.5"
+              memory: "100Mi"
+              cpu: "0.1"
             limits:
-              memory: "1Gi"
-              cpu: "1"
-              ephemeral-storage: 500Mi
+              memory: "200Mi"
+              cpu: "0.25"
+              ephemeral-storage: 100Mi
           ports:
             - containerPort: 80

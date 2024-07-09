@@ -7,7 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - http:
+    - host: django-app-demo.a2odev.com
+      http:
         paths:
           - path: /
             pathType: Prefix
